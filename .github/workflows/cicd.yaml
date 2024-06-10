@@ -25,12 +25,12 @@ jobs:
       - name: Push Docker image to DockerHub
         run: docker push tamarakostova/wikijs:latest
 
-  - name: Notify Slack
-  if: always()  # This ensures notification on both failure and success
-  uses: rtCamp/action-slack-notify@v2
-  env:
-    SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
-    SLACK_CHANNEL: wiki-app
-    SLACK_COLOR: ${{ job.status == 'success' ? 'good' : 'danger' }}
-    SLACK_MESSAGE: '${{ job.status == 'success' ? 'Deployment succeeded!' : 'Deployment failed!' }}'
-    SLACK_USERNAME: Tamara Kostova
+      - name: Notify Slack
+      if: always()  # This ensures notification on both failure and success
+      uses: rtCamp/action-slack-notify@v2
+      env:
+        SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
+        SLACK_CHANNEL: wiki-app
+        SLACK_COLOR: ${{ job.status == 'success' ? 'good' : 'danger' }}
+        SLACK_MESSAGE: '${{ job.status == 'success' ? 'Deployment succeeded!' : 'Deployment failed!' }}'
+        SLACK_USERNAME: Tamara Kostova
