@@ -35,6 +35,6 @@ jobs:
         env:
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
           SLACK_CHANNEL: wiki-app
-          SLACK_COLOR: ${{ needs.build.result == 'success' ? 'good' : 'danger' }}
-          SLACK_MESSAGE: ${{ needs.build.result == 'success' ? 'Deployment succeeded!' : 'Deployment failed!' }}
+          SLACK_COLOR: ${{ job.status }}
+          SLACK_MESSAGE: 'Deployment done!'
           SLACK_USERNAME: Tamara Kostova
