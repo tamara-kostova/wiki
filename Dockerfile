@@ -13,6 +13,8 @@ COPY ./package.json ./package.json
 COPY ./.babelrc ./.babelrc
 COPY ./.eslintignore ./.eslintignore
 COPY ./.eslintrc.yml ./.eslintrc.yml
+COPY ./assets/favicon.ico ./assets/favicon.ico
+COPY ./assets/favicon.ico ./wiki/assets/favicon.ico
 
 # Install node modules and build assets
 RUN yarn cache clean && yarn --frozen-lockfile --non-interactive && yarn build
@@ -45,6 +47,7 @@ COPY --chown=node:node --from=assets /wiki/node_modules ./node_modules
 COPY --chown=node:node ./server ./server
 COPY --chown=node:node ./dev/build/config.yml ./config.yml
 COPY --chown=node:node ./LICENSE ./LICENSE
+COPY ./assets/favicon.ico ./wiki/assets/favicon.ico
 
 # Set user to node
 USER node
