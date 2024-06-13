@@ -1,4 +1,4 @@
-FROM node:18-alpine AS assets
+FROM node:16-alpine AS assets
 
 # Install dependencies
 RUN apk add --no-cache yarn g++ make python3
@@ -14,7 +14,8 @@ COPY ./.babelrc ./.babelrc
 COPY ./.eslintignore ./.eslintignore
 COPY ./.eslintrc.yml ./.eslintrc.yml
 COPY ./assets/favicon.ico ./assets/favicon.ico
-COPY ./assets/favicon.ico ./wiki/assets/favicon.ico
+
+RUN ls -l /wiki/assets
 
 # Install node modules and build assets
 RUN yarn cache clean && yarn --frozen-lockfile --non-interactive && yarn build
@@ -25,7 +26,7 @@ RUN rm -rf /wiki/node_modules && yarn --production --frozen-lockfile --non-inter
 # ===============
 # --- Release ---
 # ===============
-FROM node:18-alpine
+FROM node:16-alpine
 
 # Install packages
 RUN apk add --no-cache bash curl git openssh gnupg sqlite
@@ -45,9 +46,11 @@ COPY --chown=node:node --from=assets /wiki/.eslintignore ./.eslintignore
 COPY --chown=node:node --from=assets /wiki/.eslintrc.yml ./.eslintrc.yml
 COPY --chown=node:node --from=assets /wiki/node_modules ./node_modules
 COPY --chown=node:node ./server ./server
+COPY --chown=node:node --from=assets /wiki/server/views ./server/views
 COPY --chown=node:node ./dev/build/config.yml ./config.yml
 COPY --chown=node:node ./LICENSE ./LICENSE
-COPY ./assets/favicon.ico ./wiki/assets/favicon.ico
+COPY --chown=node:node --from=assets /wiki/assets ./assets
+
 
 # Set user to node
 USER node
